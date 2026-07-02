@@ -1,26 +1,227 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Nick design tokens — "iOS 18 meets a glass-backed show court"
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Palette */
+  --court-white: #fafaf7;
+  --ink: #0e1116;
+  --cobalt: #2952ff;
+  --coral: #ff5a47;
+  --volt: #c8f542;
+  --glass-blue: #7fb5d6;
+
+  /* Semantic — light */
+  --bg: #fafaf7;
+  --bg-elevated: #ffffff;
+  --bg-grouped: #f1f1ec;
+  --bg-inset: #e9e9e2;
+  --text: #0e1116;
+  --text-secondary: rgba(14, 17, 22, 0.6);
+  --text-tertiary: rgba(14, 17, 22, 0.38);
+  --separator: rgba(14, 17, 22, 0.1);
+  --primary: #2952ff;
+  --primary-soft: rgba(41, 82, 255, 0.1);
+  --accent: #ff5a47;
+  --accent-soft: rgba(255, 90, 71, 0.12);
+  --win: #c8f542;
+  --win-ink: #3a4d00;
+  --win-soft: rgba(200, 245, 66, 0.28);
+  --tint: #7fb5d6;
+  --tint-soft: rgba(127, 181, 214, 0.18);
+  --card-shadow: 0 1px 2px rgba(14, 17, 22, 0.04), 0 4px 16px rgba(14, 17, 22, 0.06);
+  --sheet-shadow: 0 -8px 40px rgba(14, 17, 22, 0.18);
+  --tabbar-bg: rgba(250, 250, 247, 0.86);
+
+  /* Signature gradient — Elo chip, Log button, primary CTAs ONLY */
+  --gradient-signature: linear-gradient(135deg, #2952ff 0%, #7b48ff 52%, #ff5a47 100%);
+
+  /* Chart marks — validated (dataviz six checks) against the elevated surface.
+     Volt fails contrast as a chart fill; never use it for marks. */
+  --chart-1: #2952ff;
+  --chart-2: #ff5a47;
+  --chart-grid: rgba(14, 17, 22, 0.08);
+
+  /* Shape + spacing */
+  --radius-card: 20px;
+  --radius-card-sm: 16px;
+  --radius-sheet: 24px;
+  --radius-control: 12px;
+  --radius-pill: 999px;
+  --touch: 44px;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* Type */
+  --font-ios: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.dark {
+  --bg: #0e1116;
+  --bg-elevated: #171b22;
+  --bg-grouped: #12151b;
+  --bg-inset: #1e232c;
+  --text: #f4f5f2;
+  --text-secondary: rgba(244, 245, 242, 0.62);
+  --text-tertiary: rgba(244, 245, 242, 0.38);
+  --separator: rgba(244, 245, 242, 0.12);
+  --primary: #4d6eff;
+  --primary-soft: rgba(77, 110, 255, 0.18);
+  --accent: #ff6b59;
+  --accent-soft: rgba(255, 107, 89, 0.16);
+  --win: #c8f542;
+  --win-ink: #c8f542;
+  --win-soft: rgba(200, 245, 66, 0.14);
+  --tint: #7fb5d6;
+  --tint-soft: rgba(127, 181, 214, 0.14);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.35);
+  --sheet-shadow: 0 -8px 40px rgba(0, 0, 0, 0.6);
+  --tabbar-bg: rgba(14, 17, 22, 0.84);
+  --chart-1: #4d6eff;
+  --chart-2: #f04a36;
+  --chart-grid: rgba(244, 245, 242, 0.1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-elevated: var(--bg-elevated);
+  --color-grouped: var(--bg-grouped);
+  --color-inset: var(--bg-inset);
+  --color-ink: var(--text);
+  --color-ink-2: var(--text-secondary);
+  --color-ink-3: var(--text-tertiary);
+  --color-separator: var(--separator);
+  --color-cobalt: var(--primary);
+  --color-cobalt-soft: var(--primary-soft);
+  --color-coral: var(--accent);
+  --color-coral-soft: var(--accent-soft);
+  --color-volt: var(--win);
+  --color-volt-ink: var(--win-ink);
+  --color-volt-soft: var(--win-soft);
+  --color-glass: var(--tint);
+  --color-glass-soft: var(--tint-soft);
+  --radius-card: var(--radius-card);
+  --radius-card-sm: var(--radius-card-sm);
+  --radius-sheet: var(--radius-sheet);
+  --radius-control: var(--radius-control);
+  --font-sans: var(--font-ios);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-family: var(--font-ios);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overscroll-behavior-y: none;
+}
+
+/* iOS large title */
+.large-title {
+  font-size: 34px;
+  line-height: 41px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+
+.nav-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+/* Grouped rounded card */
+.card {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-shadow);
+}
+
+/* Signature gradient surfaces */
+.gradient-signature {
+  background: var(--gradient-signature);
+  color: #fff;
+}
+
+/* Hairline separators inside grouped lists */
+.hairline > * + * {
+  border-top: 0.5px solid var(--separator);
+}
+
+/* Hide scrollbars on horizontal scrollers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  background: var(--bg-inset);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--bg-elevated) 65%, transparent),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Court-line motif for the live scorer background */
+.court-lines {
+  background-image:
+    linear-gradient(to right, var(--separator) 0.5px, transparent 0.5px),
+    linear-gradient(to bottom, var(--separator) 0.5px, transparent 0.5px);
+  background-size: 72px 72px;
+}
+
+/* Safe-area helpers */
+.pt-safe {
+  padding-top: var(--safe-top);
+}
+.pb-safe {
+  padding-bottom: var(--safe-bottom);
+}
+.pb-tabbar {
+  padding-bottom: calc(88px + var(--safe-bottom));
+}
+
+/* Number tabular for scores */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
